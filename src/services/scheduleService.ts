@@ -1,7 +1,7 @@
-import fetchJsonp from 'fetch-jsonp';
 import type { Schedule, CategoryType } from '../types/schedule';
 import type { ScheduleApiResponse, ScheduleApiItem } from '../types/api';
 import { getCachedData, setCachedData, CACHE_KEYS } from '../utils/cache';
+import { fetchJsonp } from '../utils/jsonp';
 
 const SCHEDULE_API_BASE = 'https://www.nogizaka46.com/s/n46/api/list/schedule';
 
@@ -41,12 +41,11 @@ export async function fetchSchedules(yearMonth: string): Promise<Schedule[]> {
   }
 
   try {
-    const response = await fetchJsonp(`${SCHEDULE_API_BASE}?dy=${yearMonth}`, {
-      jsonpCallbackFunction: 'res',
-      timeout: 10000,
-    });
-
-    const data = (await response.json()) as ScheduleApiResponse;
+    const data = await fetchJsonp<ScheduleApiResponse>(
+      `${SCHEDULE_API_BASE}?dy=${yearMonth}`,
+      'callback',
+      10000
+    );
 
     if (!data.data || !Array.isArray(data.data)) {
       return [];

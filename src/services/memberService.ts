@@ -1,7 +1,7 @@
-import fetchJsonp from 'fetch-jsonp';
 import type { Member, Generation } from '../types/member';
 import type { MemberApiResponse, MemberApiItem } from '../types/api';
 import { getCachedData, setCachedData, CACHE_KEYS } from '../utils/cache';
+import { fetchJsonp } from '../utils/jsonp';
 
 const MEMBER_API_URL = 'https://www.nogizaka46.com/s/n46/api/list/member';
 
@@ -33,12 +33,11 @@ export async function fetchMembers(): Promise<Member[]> {
   }
 
   try {
-    const response = await fetchJsonp(MEMBER_API_URL, {
-      jsonpCallbackFunction: 'res',
-      timeout: 10000,
-    });
-
-    const data = (await response.json()) as MemberApiResponse;
+    const data = await fetchJsonp<MemberApiResponse>(
+      MEMBER_API_URL,
+      'callback',
+      10000
+    );
 
     if (!data.data || !Array.isArray(data.data)) {
       return [];
