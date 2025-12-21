@@ -7,7 +7,7 @@
       // GitHub Pages SPA fallback
       // パスをクエリパラメータに変換してindex.htmlにリダイレクト
       const path = window.location.pathname;
-      const base = '/nogi/';
+      const base = '/NogiSchedule/';
       if (path.startsWith(base)) {
         const redirectPath = path.slice(base.length);
         window.location.replace(base + '?path=' + encodeURIComponent(redirectPath));
