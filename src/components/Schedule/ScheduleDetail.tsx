@@ -62,7 +62,10 @@ export function ScheduleDetail({
       {schedule.description && (
         <div className={styles.detailDescription}>
           <h4 className={styles.detailSectionTitle}>詳細</h4>
-          <p>{schedule.description}</p>
+          <div
+            className={styles.detailText}
+            dangerouslySetInnerHTML={{ __html: schedule.description }}
+          />
         </div>
       )}
 

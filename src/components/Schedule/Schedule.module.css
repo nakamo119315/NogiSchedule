@@ -133,6 +133,27 @@
   line-height: 1.6;
 }
 
+.detailText {
+  margin: var(--spacing-sm) 0 0;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  line-height: 1.6;
+}
+
+.detailText a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.detailText p {
+  margin: 0 0 var(--spacing-sm);
+}
+
+.detailText br {
+  display: block;
+  margin: var(--spacing-xs) 0;
+}
+
 .detailSectionTitle {
   font-size: 13px;
   font-weight: 600;
