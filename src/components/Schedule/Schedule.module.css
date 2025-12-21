@@ -1,0 +1,208 @@
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.item:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.item:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.categoryBadge {
+  flex-shrink: 0;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.itemContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.itemTitle {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.itemTime {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+
+/* Compact style for calendar cells */
+.itemCompact {
+  padding: 2px 4px;
+  border-radius: 2px;
+  color: white;
+  font-size: 10px;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.itemCompact:hover {
+  opacity: 0.8;
+}
+
+.itemCompact:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.itemCompactTitle {
+  font-weight: 500;
+}
+
+/* Schedule Detail styles */
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.detailCategory {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+.detailTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.detailMeta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.detailMetaItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.detailLabel {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  min-width: 40px;
+}
+
+.detailValue {
+  font-size: 14px;
+  color: var(--color-text-primary);
+}
+
+.detailDescription {
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+.detailDescription p {
+  margin: var(--spacing-sm) 0 0;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  line-height: 1.6;
+}
+
+.detailSectionTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* Member List styles */
+.memberList {
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+.memberListTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--spacing-sm);
+}
+
+.memberChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.memberChip {
+  padding: 4px 10px;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  font-size: 12px;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.memberChip:hover {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.memberChip:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+/* External Link */
+.externalLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-primary);
+  color: white;
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  margin-top: var(--spacing-sm);
+}
+
+.externalLink:hover {
+  background-color: var(--color-primary-light);
+}
+
+.externalLink:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}

@@ -1,0 +1,26 @@
+.status {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-sm);
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #22C55E;
+}
+
+.offline {
+  background-color: #FEF3C7;
+  color: #92400E;
+}
+
+.offline .dot {
+  background-color: #F59E0B;
+}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>乃木坂46 スケジュールビューアー</title>
+    <script>
+      // GitHub Pages SPA fallback
+      // パスをクエリパラメータに変換してindex.htmlにリダイレクト
+      const path = window.location.pathname;
+      const base = '/nogi/';
+      if (path.startsWith(base)) {
+        const redirectPath = path.slice(base.length);
+        window.location.replace(base + '?path=' + encodeURIComponent(redirectPath));
+      } else {
+        window.location.replace(base);
+      }
+    </script>
+  </head>
+  <body>
+    <p>Redirecting...</p>
+  </body>
+</html>
