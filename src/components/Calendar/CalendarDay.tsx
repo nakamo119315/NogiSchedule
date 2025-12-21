@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Schedule } from '../../types/schedule';
 import { ScheduleItem } from '../Schedule/ScheduleItem';
 import { isToday, formatDateSlash } from '../../utils/date';
@@ -18,15 +19,20 @@ export function CalendarDay({
   isCurrentMonth,
   onScheduleClick,
 }: CalendarDayProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const dateStr = formatDateSlash(date);
   const daySchedules = schedules.filter((s) => s.date === dateStr);
   const today = isToday(date);
   const hasMore = daySchedules.length > MAX_VISIBLE_ITEMS;
-  const visibleSchedules = daySchedules.slice(0, MAX_VISIBLE_ITEMS);
+  const visibleSchedules = isExpanded ? daySchedules : daySchedules.slice(0, MAX_VISIBLE_ITEMS);
+
+  const handleMoreClick = () => {
+    setIsExpanded(!isExpanded);
+  };
 
   return (
     <div
-      className={`${styles.day} ${!isCurrentMonth ? styles.dayOtherMonth : ''} ${today ? styles.dayToday : ''}`}
+      className={`${styles.day} ${!isCurrentMonth ? styles.dayOtherMonth : ''} ${today ? styles.dayToday : ''} ${isExpanded ? styles.dayExpanded : ''}`}
     >
       <div className={styles.dayNumber}>{date.getDate()}</div>
       <div className={styles.daySchedules}>
@@ -39,9 +45,13 @@ export function CalendarDay({
           />
         ))}
         {hasMore && (
-          <div className={styles.moreCount}>
-            +{daySchedules.length - MAX_VISIBLE_ITEMS}件
-          </div>
+          <button
+            className={styles.moreCount}
+            onClick={handleMoreClick}
+            type="button"
+          >
+            {isExpanded ? '閉じる' : `+${daySchedules.length - MAX_VISIBLE_ITEMS}件`}
+          </button>
         )}
       </div>
     </div>
