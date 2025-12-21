@@ -44,7 +44,7 @@ export async function fetchSchedules(yearMonth: string): Promise<Schedule[]> {
     const data = await fetchJsonp<ScheduleApiResponse>(
       `${SCHEDULE_API_BASE}?dy=${yearMonth}`,
       'callback',
-      10000
+      20000
     );
 
     if (!data.data || !Array.isArray(data.data)) {

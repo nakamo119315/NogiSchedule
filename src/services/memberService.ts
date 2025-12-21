@@ -36,7 +36,7 @@ export async function fetchMembers(): Promise<Member[]> {
     const data = await fetchJsonp<MemberApiResponse>(
       MEMBER_API_URL,
       'callback',
-      10000
+      20000
     );
 
     if (!data.data || !Array.isArray(data.data)) {
