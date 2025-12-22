@@ -1,12 +1,17 @@
 import { useEffect, useRef, useCallback } from 'react';
 import type { Schedule } from '../../types/schedule';
 import { ScheduleItem } from './ScheduleItem';
+import { CalendarHeader } from '../Calendar/CalendarHeader';
 import styles from './Schedule.module.css';
 
 interface ScheduleListProps {
   schedules: Schedule[];
+  currentMonth: Date;
   onScheduleClick?: (schedule: Schedule) => void;
   onSwitchToCalendar?: () => void;
+  onPrevMonth: () => void;
+  onNextMonth: () => void;
+  onToday: () => void;
 }
 
 interface GroupedSchedules {
@@ -21,7 +26,15 @@ function getTodayString(): string {
   return `${year}/${month}/${day}`;
 }
 
-export function ScheduleList({ schedules, onScheduleClick, onSwitchToCalendar }: ScheduleListProps) {
+export function ScheduleList({
+  schedules,
+  currentMonth,
+  onScheduleClick,
+  onSwitchToCalendar,
+  onPrevMonth,
+  onNextMonth,
+  onToday,
+}: ScheduleListProps) {
   const todayRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const todayString = getTodayString();
@@ -81,14 +94,40 @@ export function ScheduleList({ schedules, onScheduleClick, onSwitchToCalendar }:
 
   if (schedules.length === 0) {
     return (
-      <div className={styles.listEmpty}>
-        スケジュールがありません
+      <div className={styles.listContainer}>
+        <CalendarHeader
+          currentMonth={currentMonth}
+          onPrevMonth={onPrevMonth}
+          onNextMonth={onNextMonth}
+          onToday={onToday}
+        />
+        <div className={styles.listEmpty}>
+          スケジュールがありません
+        </div>
+        {onSwitchToCalendar && (
+          <div className={styles.floatingButtons}>
+            <button
+              className={styles.floatingButton}
+              onClick={onSwitchToCalendar}
+              type="button"
+              aria-label="カレンダー表示に切り替え"
+            >
+              📅
+            </button>
+          </div>
+        )}
       </div>
     );
   }
 
   return (
     <div className={styles.listContainer}>
+      <CalendarHeader
+        currentMonth={currentMonth}
+        onPrevMonth={onPrevMonth}
+        onNextMonth={onNextMonth}
+        onToday={onToday}
+      />
       <div className={styles.floatingButtons}>
         <button
           className={styles.floatingButton}

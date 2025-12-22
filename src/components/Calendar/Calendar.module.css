@@ -217,3 +217,33 @@
     font-size: 14px;
   }
 }
+
+/* Floating button for view switch */
+.floatingButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  transition: all 0.2s;
+  min-width: 48px;
+  text-align: center;
+}
+
+.floatingButton:hover {
+  background-color: var(--color-primary-light);
+  transform: translateY(-2px);
+}
+
+.floatingButton:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}

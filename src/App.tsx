@@ -105,6 +105,7 @@ function App() {
             onToday={goToToday}
             onRetry={refetch}
             onScheduleClick={handleScheduleClick}
+            onSwitchToList={() => setViewMode('list')}
             emptyMessage={emptyMessage}
           />
         ) : (
@@ -119,8 +120,12 @@ function App() {
             {!isLoading && !error && (
               <ScheduleList
                 schedules={filteredSchedules}
+                currentMonth={currentMonth}
                 onScheduleClick={handleScheduleClick}
                 onSwitchToCalendar={() => setViewMode('calendar')}
+                onPrevMonth={goToPrevMonth}
+                onNextMonth={goToNextMonth}
+                onToday={goToToday}
               />
             )}
           </>

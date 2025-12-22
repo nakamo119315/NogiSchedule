@@ -15,6 +15,7 @@ interface CalendarViewProps {
   onToday: () => void;
   onRetry: () => void;
   onScheduleClick?: (schedule: Schedule) => void;
+  onSwitchToList?: () => void;
   emptyMessage?: string;
 }
 
@@ -28,6 +29,7 @@ export function CalendarView({
   onToday,
   onRetry,
   onScheduleClick,
+  onSwitchToList,
   emptyMessage = 'この月のスケジュールはありません',
 }: CalendarViewProps) {
   return (
@@ -59,6 +61,17 @@ export function CalendarView({
             <p className={styles.emptyMessage}>{emptyMessage}</p>
           )}
         </>
+      )}
+
+      {onSwitchToList && (
+        <button
+          className={styles.floatingButton}
+          onClick={onSwitchToList}
+          type="button"
+          aria-label="リスト表示に切り替え"
+        >
+          📋
+        </button>
       )}
     </div>
   );
