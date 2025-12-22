@@ -26,6 +26,14 @@ function getTodayString(): string {
   return `${year}/${month}/${day}`;
 }
 
+function isCurrentMonth(currentMonth: Date): boolean {
+  const today = new Date();
+  return (
+    currentMonth.getFullYear() === today.getFullYear() &&
+    currentMonth.getMonth() === today.getMonth()
+  );
+}
+
 export function ScheduleList({
   schedules,
   currentMonth,
@@ -66,11 +74,15 @@ export function ScheduleList({
     return sortedDates.length > 0 ? sortedDates[sortedDates.length - 1] : null;
   }, [sortedDates, todayString]);
 
-  const scrollToToday = useCallback(() => {
-    if (todayRef.current) {
+  const handleTodayClick = useCallback(() => {
+    if (!isCurrentMonth(currentMonth)) {
+      // If not current month, go to today's month first
+      onToday();
+    } else if (todayRef.current) {
+      // If already in current month, scroll to today
       todayRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }, []);
+  }, [currentMonth, onToday]);
 
   // Auto-scroll to today on mount
   useEffect(() => {
@@ -104,8 +116,32 @@ export function ScheduleList({
         <div className={styles.listEmpty}>
           スケジュールがありません
         </div>
-        {onSwitchToCalendar && (
-          <div className={styles.floatingButtons}>
+        <div className={styles.floatingButtons}>
+          <button
+            className={styles.floatingButton}
+            onClick={onPrevMonth}
+            type="button"
+            aria-label="前月"
+          >
+            ◀
+          </button>
+          <button
+            className={styles.floatingButton}
+            onClick={handleTodayClick}
+            type="button"
+            aria-label="今日へジャンプ"
+          >
+            今日
+          </button>
+          <button
+            className={styles.floatingButton}
+            onClick={onNextMonth}
+            type="button"
+            aria-label="次月"
+          >
+            ▶
+          </button>
+          {onSwitchToCalendar && (
             <button
               className={styles.floatingButton}
               onClick={onSwitchToCalendar}
@@ -114,8 +150,8 @@ export function ScheduleList({
             >
               📅
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     );
   }
@@ -131,11 +167,27 @@ export function ScheduleList({
       <div className={styles.floatingButtons}>
         <button
           className={styles.floatingButton}
-          onClick={scrollToToday}
+          onClick={onPrevMonth}
+          type="button"
+          aria-label="前月"
+        >
+          ◀
+        </button>
+        <button
+          className={styles.floatingButton}
+          onClick={handleTodayClick}
           type="button"
           aria-label="今日へジャンプ"
         >
           今日
+        </button>
+        <button
+          className={styles.floatingButton}
+          onClick={onNextMonth}
+          type="button"
+          aria-label="次月"
+        >
+          ▶
         </button>
         {onSwitchToCalendar && (
           <button
