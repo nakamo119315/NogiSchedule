@@ -120,6 +120,7 @@ function App() {
               <ScheduleList
                 schedules={filteredSchedules}
                 onScheduleClick={handleScheduleClick}
+                onSwitchToCalendar={() => setViewMode('calendar')}
               />
             )}
           </>

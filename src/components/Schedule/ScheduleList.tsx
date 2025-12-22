@@ -6,6 +6,7 @@ import styles from './Schedule.module.css';
 interface ScheduleListProps {
   schedules: Schedule[];
   onScheduleClick?: (schedule: Schedule) => void;
+  onSwitchToCalendar?: () => void;
 }
 
 interface GroupedSchedules {
@@ -20,7 +21,7 @@ function getTodayString(): string {
   return `${year}/${month}/${day}`;
 }
 
-export function ScheduleList({ schedules, onScheduleClick }: ScheduleListProps) {
+export function ScheduleList({ schedules, onScheduleClick, onSwitchToCalendar }: ScheduleListProps) {
   const todayRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const todayString = getTodayString();
@@ -88,14 +89,26 @@ export function ScheduleList({ schedules, onScheduleClick }: ScheduleListProps) 
 
   return (
     <div className={styles.listContainer}>
-      <button
-        className={styles.jumpToTodayButton}
-        onClick={scrollToToday}
-        type="button"
-        aria-label="今日へジャンプ"
-      >
-        今日
-      </button>
+      <div className={styles.floatingButtons}>
+        <button
+          className={styles.floatingButton}
+          onClick={scrollToToday}
+          type="button"
+          aria-label="今日へジャンプ"
+        >
+          今日
+        </button>
+        {onSwitchToCalendar && (
+          <button
+            className={styles.floatingButton}
+            onClick={onSwitchToCalendar}
+            type="button"
+            aria-label="カレンダー表示に切り替え"
+          >
+            📅
+          </button>
+        )}
+      </div>
       <div className={styles.list} ref={listRef}>
         {sortedDates.map((date) => (
           <div
