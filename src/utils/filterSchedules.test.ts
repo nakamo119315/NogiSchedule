@@ -39,20 +39,22 @@ describe('filterSchedules', () => {
     expect(result).toHaveLength(4);
   });
 
-  it('filters by member codes', () => {
+  it('filters by member codes (includes schedules without member info)', () => {
     const result = filterSchedules(mockSchedules, {
       memberCodes: ['member1'],
     });
-    expect(result).toHaveLength(2);
-    expect(result.map((s) => s.code)).toEqual(['1', '3']);
+    // Includes member1 schedules + schedule without member info (code '4')
+    expect(result).toHaveLength(3);
+    expect(result.map((s) => s.code)).toEqual(['1', '3', '4']);
   });
 
-  it('filters by multiple member codes (OR logic)', () => {
+  it('filters by multiple member codes (OR logic, includes schedules without member info)', () => {
     const result = filterSchedules(mockSchedules, {
       memberCodes: ['member1', 'member3'],
     });
-    expect(result).toHaveLength(3);
-    expect(result.map((s) => s.code)).toEqual(['1', '2', '3']);
+    // Includes member1/member3 schedules + schedule without member info
+    expect(result).toHaveLength(4);
+    expect(result.map((s) => s.code)).toEqual(['1', '2', '3', '4']);
   });
 
   it('filters by category', () => {
@@ -76,15 +78,37 @@ describe('filterSchedules', () => {
       memberCodes: ['member2'],
       categories: ['tv'],
     });
+    // Only TV schedule with member2 (code '1'), no empty member schedule matches TV category
     expect(result).toHaveLength(1);
     expect(result[0].code).toBe('1');
   });
 
-  it('returns empty array when no matches', () => {
+  it('combines member and category filters with empty member schedule', () => {
+    const result = filterSchedules(mockSchedules, {
+      memberCodes: ['member1'],
+      categories: ['cd'],
+    });
+    // CD schedule has no member info, so it should be included
+    expect(result).toHaveLength(1);
+    expect(result[0].code).toBe('4');
+  });
+
+  it('returns schedules without member info when filter is active', () => {
     const result = filterSchedules(mockSchedules, {
       memberCodes: ['nonexistent'],
     });
-    expect(result).toHaveLength(0);
+    // Should include schedule '4' which has no member codes
+    expect(result).toHaveLength(1);
+    expect(result[0].code).toBe('4');
+  });
+
+  it('includes schedules without member info along with matching schedules', () => {
+    const result = filterSchedules(mockSchedules, {
+      memberCodes: ['member1'],
+    });
+    // Should include schedules with member1 AND schedule without member info
+    expect(result).toHaveLength(3);
+    expect(result.map((s) => s.code)).toEqual(['1', '3', '4']);
   });
 
   it('handles empty member codes array', () => {

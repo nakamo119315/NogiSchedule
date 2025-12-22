@@ -72,6 +72,10 @@ main {
   padding: var(--spacing-md);
 }
 
+.view-controls {
+  margin-bottom: var(--spacing-md);
+}
+
 /* Utility classes */
 .visually-hidden {
   position: absolute;

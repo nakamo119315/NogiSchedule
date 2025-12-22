@@ -227,3 +227,39 @@
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
+
+/* List view styles */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.listEmpty {
+  text-align: center;
+  color: var(--color-text-secondary);
+  padding: var(--spacing-xl);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+}
+
+.listDateGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.listDateHeader {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.listItems {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}

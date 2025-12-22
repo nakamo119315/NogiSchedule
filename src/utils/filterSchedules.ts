@@ -13,11 +13,13 @@ export function filterSchedules(
 
   return schedules.filter((schedule) => {
     // Member filter: schedule must include at least one selected member
+    // OR have no member information (show schedules without member data)
     if (memberCodes.length > 0) {
+      const hasNoMemberInfo = schedule.memberCodes.length === 0;
       const hasMatchingMember = schedule.memberCodes.some((code) =>
         memberCodes.includes(code)
       );
-      if (!hasMatchingMember) {
+      if (!hasNoMemberInfo && !hasMatchingMember) {
         return false;
       }
     }

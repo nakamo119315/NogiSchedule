@@ -8,7 +8,11 @@ import { MemberFilter } from './components/Filter/MemberFilter';
 import { CategoryFilter } from './components/Filter/CategoryFilter';
 import { ActiveFilters } from './components/Filter/ActiveFilters';
 import { Modal } from './components/common/Modal';
+import { ViewToggle, type ViewMode } from './components/common/ViewToggle';
 import { ScheduleDetail } from './components/Schedule/ScheduleDetail';
+import { ScheduleList } from './components/Schedule/ScheduleList';
+import { Loading } from './components/common/Loading';
+import { ErrorMessage } from './components/common/ErrorMessage';
 import { filterSchedules } from './utils/filterSchedules';
 import type { Schedule } from './types/schedule';
 
@@ -30,6 +34,7 @@ function App() {
   } = useFilter();
 
   const [selectedSchedule, setSelectedSchedule] = useState<Schedule | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>('calendar');
 
   const filteredSchedules = useMemo(() => {
     return filterSchedules(schedules, {
@@ -85,18 +90,40 @@ function App() {
           onClearAll={clearAllFilters}
         />
 
-        <CalendarView
-          currentMonth={currentMonth}
-          schedules={filteredSchedules}
-          isLoading={isLoading || isMembersLoading}
-          error={error}
-          onPrevMonth={goToPrevMonth}
-          onNextMonth={goToNextMonth}
-          onToday={goToToday}
-          onRetry={refetch}
-          onScheduleClick={handleScheduleClick}
-          emptyMessage={emptyMessage}
-        />
+        <div className="view-controls">
+          <ViewToggle currentView={viewMode} onViewChange={setViewMode} />
+        </div>
+
+        {viewMode === 'calendar' ? (
+          <CalendarView
+            currentMonth={currentMonth}
+            schedules={filteredSchedules}
+            isLoading={isLoading || isMembersLoading}
+            error={error}
+            onPrevMonth={goToPrevMonth}
+            onNextMonth={goToNextMonth}
+            onToday={goToToday}
+            onRetry={refetch}
+            onScheduleClick={handleScheduleClick}
+            emptyMessage={emptyMessage}
+          />
+        ) : (
+          <>
+            {(isLoading || isMembersLoading) && <Loading message="スケジュールを読み込み中..." />}
+            {error && !isLoading && (
+              <ErrorMessage
+                message="スケジュールの取得に失敗しました"
+                onRetry={refetch}
+              />
+            )}
+            {!isLoading && !error && (
+              <ScheduleList
+                schedules={filteredSchedules}
+                onScheduleClick={handleScheduleClick}
+              />
+            )}
+          </>
+        )}
       </main>
 
       <Modal
