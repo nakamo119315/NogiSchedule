@@ -116,7 +116,7 @@ export function ScheduleList({
         <div className={styles.listEmpty}>
           スケジュールがありません
         </div>
-        <div className={styles.floatingButtons}>
+        <div className={styles.floatingNav}>
           <button
             className={styles.floatingButton}
             onClick={onPrevMonth}
@@ -141,17 +141,17 @@ export function ScheduleList({
           >
             ▶
           </button>
-          {onSwitchToCalendar && (
-            <button
-              className={styles.floatingButton}
-              onClick={onSwitchToCalendar}
-              type="button"
-              aria-label="カレンダー表示に切り替え"
-            >
-              📅
-            </button>
-          )}
         </div>
+        {onSwitchToCalendar && (
+          <button
+            className={styles.floatingViewToggle}
+            onClick={onSwitchToCalendar}
+            type="button"
+            aria-label="カレンダー表示に切り替え"
+          >
+            📅
+          </button>
+        )}
       </div>
     );
   }
@@ -164,7 +164,7 @@ export function ScheduleList({
         onNextMonth={onNextMonth}
         onToday={onToday}
       />
-      <div className={styles.floatingButtons}>
+      <div className={styles.floatingNav}>
         <button
           className={styles.floatingButton}
           onClick={onPrevMonth}
@@ -189,17 +189,17 @@ export function ScheduleList({
         >
           ▶
         </button>
-        {onSwitchToCalendar && (
-          <button
-            className={styles.floatingButton}
-            onClick={onSwitchToCalendar}
-            type="button"
-            aria-label="カレンダー表示に切り替え"
-          >
-            📅
-          </button>
-        )}
       </div>
+      {onSwitchToCalendar && (
+        <button
+          className={styles.floatingViewToggle}
+          onClick={onSwitchToCalendar}
+          type="button"
+          aria-label="カレンダー表示に切り替え"
+        >
+          📅
+        </button>
+      )}
       <div className={styles.list} ref={listRef}>
         {sortedDates.map((date) => (
           <div
