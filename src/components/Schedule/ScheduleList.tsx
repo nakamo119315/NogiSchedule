@@ -1,7 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import type { Schedule } from '../../types/schedule';
 import { ScheduleItem } from './ScheduleItem';
-import { CalendarHeader } from '../Calendar/CalendarHeader';
 import styles from './Schedule.module.css';
 
 interface ScheduleListProps {
@@ -32,6 +31,12 @@ function isCurrentMonth(currentMonth: Date): boolean {
     currentMonth.getFullYear() === today.getFullYear() &&
     currentMonth.getMonth() === today.getMonth()
   );
+}
+
+function formatMonthTitle(date: Date): string {
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  return `${year}年${month}月`;
 }
 
 export function ScheduleList({
@@ -107,12 +112,7 @@ export function ScheduleList({
   if (schedules.length === 0) {
     return (
       <div className={styles.listContainer}>
-        <CalendarHeader
-          currentMonth={currentMonth}
-          onPrevMonth={onPrevMonth}
-          onNextMonth={onNextMonth}
-          onToday={onToday}
-        />
+        <h2 className={styles.monthTitle}>{formatMonthTitle(currentMonth)}</h2>
         <div className={styles.listEmpty}>
           スケジュールがありません
         </div>
@@ -158,12 +158,7 @@ export function ScheduleList({
 
   return (
     <div className={styles.listContainer}>
-      <CalendarHeader
-        currentMonth={currentMonth}
-        onPrevMonth={onPrevMonth}
-        onNextMonth={onNextMonth}
-        onToday={onToday}
-      />
+      <h2 className={styles.monthTitle}>{formatMonthTitle(currentMonth)}</h2>
       <div className={styles.floatingNav}>
         <button
           className={styles.floatingButton}

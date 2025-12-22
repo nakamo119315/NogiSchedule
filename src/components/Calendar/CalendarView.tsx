@@ -1,5 +1,4 @@
 import type { Schedule } from '../../types/schedule';
-import { CalendarHeader } from './CalendarHeader';
 import { CalendarGrid } from './CalendarGrid';
 import { Loading } from '../common/Loading';
 import { ErrorMessage } from '../common/ErrorMessage';
@@ -19,6 +18,12 @@ interface CalendarViewProps {
   emptyMessage?: string;
 }
 
+function formatMonthTitle(date: Date): string {
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  return `${year}年${month}月`;
+}
+
 export function CalendarView({
   currentMonth,
   schedules,
@@ -34,12 +39,7 @@ export function CalendarView({
 }: CalendarViewProps) {
   return (
     <div className={styles.container}>
-      <CalendarHeader
-        currentMonth={currentMonth}
-        onPrevMonth={onPrevMonth}
-        onNextMonth={onNextMonth}
-        onToday={onToday}
-      />
+      <h2 className={styles.monthTitle}>{formatMonthTitle(currentMonth)}</h2>
 
       {isLoading && <Loading message="スケジュールを読み込み中..." />}
 
@@ -63,9 +63,36 @@ export function CalendarView({
         </>
       )}
 
-      {onSwitchToList && (
+      <div className={styles.floatingNav}>
         <button
           className={styles.floatingButton}
+          onClick={onPrevMonth}
+          type="button"
+          aria-label="前月"
+        >
+          ◀
+        </button>
+        <button
+          className={styles.floatingButton}
+          onClick={onToday}
+          type="button"
+          aria-label="今日"
+        >
+          今日
+        </button>
+        <button
+          className={styles.floatingButton}
+          onClick={onNextMonth}
+          type="button"
+          aria-label="次月"
+        >
+          ▶
+        </button>
+      </div>
+
+      {onSwitchToList && (
+        <button
+          className={styles.floatingViewToggle}
           onClick={onSwitchToList}
           type="button"
           aria-label="リスト表示に切り替え"
