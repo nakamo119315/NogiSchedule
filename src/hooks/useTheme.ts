@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { getItem, setItem, getItemSync } from '../utils/storage';
 
 export type Theme = 'light' | 'dark' | 'system';
 
@@ -9,13 +10,8 @@ function getSystemTheme(): 'light' | 'dark' {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-function getStoredTheme(): Theme {
-  if (typeof window === 'undefined') return 'system';
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored === 'light' || stored === 'dark' || stored === 'system') {
-    return stored;
-  }
-  return 'system';
+function isValidTheme(value: unknown): value is Theme {
+  return value === 'light' || value === 'dark' || value === 'system';
 }
 
 export interface UseThemeResult {
@@ -26,14 +22,28 @@ export interface UseThemeResult {
 }
 
 export function useTheme(): UseThemeResult {
-  const [theme, setThemeState] = useState<Theme>(getStoredTheme);
+  const [theme, setThemeState] = useState<Theme>(() => {
+    const stored = getItemSync<string>(STORAGE_KEY, 'system');
+    return isValidTheme(stored) ? stored : 'system';
+  });
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>(() => {
-    const stored = getStoredTheme();
-    if (stored !== 'system') {
+    const stored = getItemSync<string>(STORAGE_KEY, 'system');
+    if (isValidTheme(stored) && stored !== 'system') {
       return stored;
     }
     return getSystemTheme();
   });
+  // Load from IndexedDB on mount
+  useEffect(() => {
+    const loadFromDB = async () => {
+      const storedTheme = await getItem<string>(STORAGE_KEY);
+      if (isValidTheme(storedTheme)) {
+        setThemeState(storedTheme);
+      }
+    };
+
+    loadFromDB();
+  }, []);
 
   useEffect(() => {
     const updateResolvedTheme = () => {
@@ -65,7 +75,13 @@ export function useTheme(): UseThemeResult {
 
   const setTheme = useCallback((newTheme: Theme) => {
     setThemeState(newTheme);
-    localStorage.setItem(STORAGE_KEY, newTheme);
+    setItem(STORAGE_KEY, newTheme);
+    // Also save to localStorage as cache
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newTheme));
+    } catch {
+      // ignore
+    }
   }, []);
 
   return {
