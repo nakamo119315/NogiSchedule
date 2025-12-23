@@ -1,0 +1,25 @@
+{
+  "name": "乃木坂46 スケジュールビューアー",
+  "short_name": "乃木スケ",
+  "description": "乃木坂46のスケジュールを確認できるアプリ",
+  "start_url": "/NogiSchedule/",
+  "scope": "/NogiSchedule/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#8b5cf6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
