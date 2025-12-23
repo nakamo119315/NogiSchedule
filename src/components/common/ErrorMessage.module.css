@@ -5,7 +5,7 @@
   justify-content: center;
   padding: var(--spacing-xl);
   gap: var(--spacing-md);
-  background-color: #FEF2F2;
+  background-color: var(--color-error-bg);
   border-radius: var(--radius-md);
   margin: var(--spacing-md);
 }
@@ -15,7 +15,7 @@
 }
 
 .message {
-  color: #991B1B;
+  color: var(--color-error-text);
   font-size: 14px;
   text-align: center;
 }

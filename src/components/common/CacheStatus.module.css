@@ -13,14 +13,14 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: #22C55E;
+  background-color: var(--color-success);
 }
 
 .offline {
-  background-color: #FEF3C7;
-  color: #92400E;
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning-text);
 }
 
 .offline .dot {
-  background-color: #F59E0B;
+  background-color: var(--color-warning);
 }

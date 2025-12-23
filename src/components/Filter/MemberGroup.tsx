@@ -6,6 +6,7 @@ interface MemberGroupProps {
   generation: Generation;
   members: Member[];
   selectedMembers: string[];
+  favoriteMembers?: string[];
   onToggleMember: (code: string) => void;
 }
 
@@ -13,6 +14,7 @@ export function MemberGroup({
   generation,
   members,
   selectedMembers,
+  favoriteMembers = [],
   onToggleMember,
 }: MemberGroupProps) {
   if (members.length === 0) {
@@ -28,6 +30,7 @@ export function MemberGroup({
             key={member.code}
             member={member}
             isSelected={selectedMembers.includes(member.code)}
+            isFavorite={favoriteMembers.includes(member.code)}
             onToggle={onToggleMember}
           />
         ))}

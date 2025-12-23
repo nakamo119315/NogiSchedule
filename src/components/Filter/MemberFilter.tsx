@@ -7,6 +7,7 @@ interface MemberFilterProps {
   members: Member[];
   selectedMembers: string[];
   showGraduatedMembers: boolean;
+  favoriteMembers?: string[];
   onToggleMember: (code: string) => void;
   onToggleShowGraduated: () => void;
   onClear: () => void;
@@ -18,6 +19,7 @@ export function MemberFilter({
   members,
   selectedMembers,
   showGraduatedMembers,
+  favoriteMembers = [],
   onToggleMember,
   onToggleShowGraduated,
   onClear,
@@ -88,6 +90,7 @@ export function MemberFilter({
                 generation={generation}
                 members={membersByGeneration[generation] || []}
                 selectedMembers={selectedMembers}
+                favoriteMembers={favoriteMembers}
                 onToggleMember={onToggleMember}
               />
             ))}

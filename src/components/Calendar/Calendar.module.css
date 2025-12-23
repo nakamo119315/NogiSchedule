@@ -93,11 +93,11 @@
 }
 
 .weekdaySunday {
-  color: #EF4444;
+  color: var(--color-weekday-sunday);
 }
 
 .weekdaySaturday {
-  color: #3B82F6;
+  color: var(--color-weekday-saturday);
 }
 
 /* Day cell styles */
@@ -113,7 +113,7 @@
 }
 
 .dayOtherMonth {
-  background-color: #F9FAFB;
+  background-color: var(--color-day-other-month);
 }
 
 .dayOtherMonth .dayNumber {
@@ -122,7 +122,7 @@
 }
 
 .dayToday {
-  background-color: #EEF2FF;
+  background-color: var(--color-today-bg);
 }
 
 .dayToday .dayNumber {

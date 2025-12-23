@@ -3,16 +3,21 @@ import { useCalendar } from './hooks/useCalendar';
 import { useSchedules } from './hooks/useSchedules';
 import { useMembers } from './hooks/useMembers';
 import { useFilter } from './hooks/useFilter';
+import { useTheme } from './hooks/useTheme';
+import { useFavorites } from './hooks/useFavorites';
 import { CalendarView } from './components/Calendar/CalendarView';
 import { MemberFilter } from './components/Filter/MemberFilter';
 import { CategoryFilter } from './components/Filter/CategoryFilter';
 import { ActiveFilters } from './components/Filter/ActiveFilters';
+import { SearchInput } from './components/Filter/SearchInput';
 import { Modal } from './components/common/Modal';
 import { ViewToggle, type ViewMode } from './components/common/ViewToggle';
+import { ExportButton } from './components/common/ExportButton';
 import { ScheduleDetail } from './components/Schedule/ScheduleDetail';
 import { ScheduleList } from './components/Schedule/ScheduleList';
 import { Loading } from './components/common/Loading';
 import { ErrorMessage } from './components/common/ErrorMessage';
+import { SettingsModal } from './components/Settings/SettingsModal';
 import { filterSchedules } from './utils/filterSchedules';
 import type { Schedule } from './types/schedule';
 
@@ -20,10 +25,18 @@ function App() {
   const { currentMonth, goToNextMonth, goToPrevMonth, goToToday } = useCalendar();
   const { schedules, isLoading, error, refetch } = useSchedules(currentMonth);
   const { members, isLoading: isMembersLoading } = useMembers();
+  const { theme, setTheme } = useTheme();
+  const {
+    favoriteMembers,
+    autoApplyFilter,
+    toggleFavorite,
+    setAutoApplyFilter,
+  } = useFavorites();
   const {
     selectedMembers,
     selectedCategories,
     showGraduatedMembers,
+    searchKeyword,
     toggleMember,
     toggleCategory,
     toggleShowGraduatedMembers,
@@ -31,17 +44,22 @@ function App() {
     clearCategoryFilter,
     clearAllFilters,
     hasActiveFilters,
+    setSearchKeyword,
+    clearSearchKeyword,
+    setSelectedMembers,
   } = useFilter();
 
   const [selectedSchedule, setSelectedSchedule] = useState<Schedule | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>('calendar');
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const filteredSchedules = useMemo(() => {
     return filterSchedules(schedules, {
       memberCodes: selectedMembers,
       categories: selectedCategories,
+      keyword: searchKeyword,
     });
-  }, [schedules, selectedMembers, selectedCategories]);
+  }, [schedules, selectedMembers, selectedCategories, searchKeyword]);
 
   const handleScheduleClick = (schedule: Schedule) => {
     setSelectedSchedule(schedule);
@@ -55,6 +73,10 @@ function App() {
     toggleMember(code);
   };
 
+  const handleApplyFavoritesToFilter = () => {
+    setSelectedMembers(favoriteMembers);
+  };
+
   const emptyMessage = hasActiveFilters
     ? '選択したフィルターに一致するスケジュールはありません'
     : 'この月のスケジュールはありません';
@@ -63,13 +85,28 @@ function App() {
     <div className="app">
       <header className="app-header">
         <h1>乃木坂46 スケジュールビューアー</h1>
+        <button
+          className="settings-button"
+          onClick={() => setIsSettingsOpen(true)}
+          type="button"
+          aria-label="設定"
+        >
+          ⚙️
+        </button>
       </header>
 
       <main>
+        <SearchInput
+          value={searchKeyword}
+          onChange={setSearchKeyword}
+          onClear={clearSearchKeyword}
+        />
+
         <MemberFilter
           members={members}
           selectedMembers={selectedMembers}
           showGraduatedMembers={showGraduatedMembers}
+          favoriteMembers={favoriteMembers}
           onToggleMember={toggleMember}
           onToggleShowGraduated={toggleShowGraduatedMembers}
           onClear={clearMemberFilter}
@@ -92,6 +129,7 @@ function App() {
 
         <div className="view-controls">
           <ViewToggle currentView={viewMode} onViewChange={setViewMode} />
+          <ExportButton schedules={filteredSchedules} />
         </div>
 
         {viewMode === 'calendar' ? (
@@ -146,6 +184,19 @@ function App() {
           />
         )}
       </Modal>
+
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        theme={theme}
+        onThemeChange={setTheme}
+        members={members}
+        favoriteMembers={favoriteMembers}
+        autoApplyFilter={autoApplyFilter}
+        onToggleFavorite={toggleFavorite}
+        onAutoApplyFilterChange={setAutoApplyFilter}
+        onApplyFavoritesToFilter={handleApplyFavoritesToFilter}
+      />
     </div>
   );
 }

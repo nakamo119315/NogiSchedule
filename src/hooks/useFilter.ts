@@ -1,10 +1,12 @@
 import { useState, useCallback } from 'react';
 import type { CategoryType } from '../types/schedule';
+import { getInitialFavoritesForFilter } from './useFavorites';
 
 interface FilterState {
   selectedMembers: string[];
   selectedCategories: CategoryType[];
   showGraduatedMembers: boolean;
+  searchKeyword: string;
 }
 
 interface UseFilterResult extends FilterState {
@@ -15,12 +17,18 @@ interface UseFilterResult extends FilterState {
   clearCategoryFilter: () => void;
   clearAllFilters: () => void;
   hasActiveFilters: boolean;
+  setSearchKeyword: (keyword: string) => void;
+  clearSearchKeyword: () => void;
+  setSelectedMembers: (members: string[]) => void;
 }
 
 export function useFilter(): UseFilterResult {
-  const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
+  const [selectedMembers, setSelectedMembers] = useState<string[]>(() => {
+    return getInitialFavoritesForFilter();
+  });
   const [selectedCategories, setSelectedCategories] = useState<CategoryType[]>([]);
   const [showGraduatedMembers, setShowGraduatedMembers] = useState(false);
+  const [searchKeyword, setSearchKeywordState] = useState('');
 
   const toggleMember = useCallback((code: string) => {
     setSelectedMembers((prev) =>
@@ -53,14 +61,27 @@ export function useFilter(): UseFilterResult {
   const clearAllFilters = useCallback(() => {
     setSelectedMembers([]);
     setSelectedCategories([]);
+    setSearchKeywordState('');
   }, []);
 
-  const hasActiveFilters = selectedMembers.length > 0 || selectedCategories.length > 0;
+  const setSearchKeyword = useCallback((keyword: string) => {
+    setSearchKeywordState(keyword);
+  }, []);
+
+  const clearSearchKeyword = useCallback(() => {
+    setSearchKeywordState('');
+  }, []);
+
+  const hasActiveFilters =
+    selectedMembers.length > 0 ||
+    selectedCategories.length > 0 ||
+    searchKeyword.trim() !== '';
 
   return {
     selectedMembers,
     selectedCategories,
     showGraduatedMembers,
+    searchKeyword,
     toggleMember,
     toggleCategory,
     toggleShowGraduatedMembers,
@@ -68,5 +89,8 @@ export function useFilter(): UseFilterResult {
     clearCategoryFilter,
     clearAllFilters,
     hasActiveFilters,
+    setSearchKeyword,
+    clearSearchKeyword,
+    setSelectedMembers,
   };
 }
