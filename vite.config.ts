@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/NogiSchedule/',
+  base: process.env.CF_PAGES ? '/' : '/NogiSchedule/',
   resolve: {
     alias: {
       '@': '/src',

@@ -1,0 +1,7 @@
+{
+  "name": "nogi-schedule",
+  "compatibility_date": "2025-12-24",
+  "assets": {
+    "directory": "./dist"
+  }
+}

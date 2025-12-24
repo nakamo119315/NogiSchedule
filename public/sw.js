@@ -1,5 +1,7 @@
 const CACHE_NAME = 'nogi-schedule-v1';
-const BASE_PATH = '/NogiSchedule/';
+
+// ベースパスを動的に取得
+const BASE_PATH = self.location.pathname.replace(/sw\.js$/, '');
 
 // キャッシュするアセット
 const STATIC_ASSETS = [

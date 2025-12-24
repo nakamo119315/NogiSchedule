@@ -6,15 +6,15 @@
     <title>乃木坂46 スケジュールビューアー</title>
 
     <!-- PWA -->
-    <link rel="manifest" href="/NogiSchedule/manifest.json" />
+    <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#8b5cf6" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="乃木スケ" />
 
     <!-- Icons -->
-    <link rel="icon" type="image/svg+xml" href="/NogiSchedule/icons/icon.svg" />
-    <link rel="apple-touch-icon" href="/NogiSchedule/icons/icon-192.png" />
+    <link rel="icon" type="image/svg+xml" href="icons/icon.svg" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
   </head>
   <body>
     <div id="root"></div>
@@ -22,7 +22,8 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/NogiSchedule/sw.js')
+          const basePath = document.baseURI.replace(/\/[^/]*$/, '/');
+          navigator.serviceWorker.register(basePath + 'sw.js')
             .then((reg) => console.log('SW registered:', reg.scope))
             .catch((err) => console.error('SW registration failed:', err));
         });
