@@ -23,7 +23,14 @@ import type { Schedule } from './types/schedule';
 
 function App() {
   const { currentMonth, goToNextMonth, goToPrevMonth, goToToday } = useCalendar();
-  const { schedules, isLoading, error, refetch } = useSchedules(currentMonth);
+  const { schedules, isLoading, error, refetch, lastUpdated } = useSchedules(currentMonth);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await refetch();
+    setTimeout(() => setIsRefreshing(false), 500);
+  };
   const { members, isLoading: isMembersLoading } = useMembers();
   const { theme, setTheme } = useTheme();
   const {
@@ -85,14 +92,26 @@ function App() {
     <div className="app">
       <header className="app-header">
         <h1>乃木坂46 スケジュールビューアー</h1>
-        <button
-          className="settings-button"
-          onClick={() => setIsSettingsOpen(true)}
-          type="button"
-          aria-label="設定"
-        >
-          ⚙️
-        </button>
+        <div className="header-buttons">
+          <button
+            className="refresh-button"
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            type="button"
+            aria-label="更新"
+            title={lastUpdated ? `最終更新: ${lastUpdated.toLocaleTimeString()}` : '更新'}
+          >
+            <span className={isRefreshing ? 'spinning' : ''}>🔄</span>
+          </button>
+          <button
+            className="settings-button"
+            onClick={() => setIsSettingsOpen(true)}
+            type="button"
+            aria-label="設定"
+          >
+            ⚙️
+          </button>
+        </div>
       </header>
 
       <main>

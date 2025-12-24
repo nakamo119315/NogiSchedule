@@ -74,3 +74,29 @@ export function getCachedSchedules(yearMonth: string): Schedule[] | null {
   const cacheKey = CACHE_KEYS.schedules(yearMonth);
   return getCachedData<Schedule[]>(cacheKey);
 }
+
+// キャッシュを無視して強制的に再取得
+export async function forceRefreshSchedules(yearMonth: string): Promise<Schedule[]> {
+  try {
+    const data = await fetchJsonp<ScheduleApiResponse>(
+      `${SCHEDULE_API_BASE}?dy=${yearMonth}`,
+      'callback',
+      20000
+    );
+
+    if (!data.data || !Array.isArray(data.data)) {
+      return [];
+    }
+
+    const schedules = data.data.map(mapSchedule);
+
+    // キャッシュを更新
+    const cacheKey = CACHE_KEYS.schedules(yearMonth);
+    setCachedData(cacheKey, schedules, true);
+
+    return schedules;
+  } catch (error) {
+    console.error('Failed to force refresh schedules:', error);
+    throw error;
+  }
+}
