@@ -53,17 +53,24 @@ self.addEventListener('fetch', (event) => {
   // 静的アセットはキャッシュ優先
   event.respondWith(
     caches.match(event.request).then((cached) => {
-      const fetched = fetch(event.request).then((response) => {
-        // 有効なレスポンスをキャッシュに保存
-        if (response && response.status === 200) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, clone);
-          });
-        }
-        return response;
-      });
-      return cached || fetched;
+      if (cached) {
+        return cached;
+      }
+      return fetch(event.request)
+        .then((response) => {
+          // 有効なレスポンスをキャッシュに保存
+          if (response && response.status === 200 && response.type === 'basic') {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, clone);
+            });
+          }
+          return response;
+        })
+        .catch(() => {
+          // オフライン時はキャッシュから返す（なければ失敗）
+          return caches.match(event.request);
+        });
     })
   );
 });
