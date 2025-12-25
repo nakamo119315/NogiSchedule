@@ -11,7 +11,3 @@ export interface Schedule {
   link?: string;
   memberCodes: string[];
 }
-
-export interface SchedulesByDate {
-  [date: string]: Schedule[];
-}

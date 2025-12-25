@@ -43,7 +43,6 @@ export async function fetchSchedules(yearMonth: string): Promise<Schedule[]> {
   try {
     const data = await fetchJsonp<ScheduleApiResponse>(
       `${SCHEDULE_API_BASE}?dy=${yearMonth}`,
-      'callback',
       20000
     );
 
@@ -80,7 +79,6 @@ export async function forceRefreshSchedules(yearMonth: string): Promise<Schedule
   try {
     const data = await fetchJsonp<ScheduleApiResponse>(
       `${SCHEDULE_API_BASE}?dy=${yearMonth}`,
-      'callback',
       20000
     );
 

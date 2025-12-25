@@ -1,6 +1,8 @@
 import type { Schedule } from '../../types/schedule';
 import type { Member } from '../../types/member';
 import { getCategoryInfo } from '../../types/category';
+import { createSafeHtmlProps } from '../../utils/sanitize';
+import { formatFullDateWithWeekday } from '../../utils/date';
 import { MemberList } from './MemberList';
 import styles from './Schedule.module.css';
 
@@ -24,13 +26,6 @@ export function ScheduleDetail({
     onClose();
   };
 
-  const formatDate = (dateStr: string): string => {
-    const [year, month, day] = dateStr.split('/').map(Number);
-    const date = new Date(year, month - 1, day);
-    const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
-    return `${year}年${month}月${day}日(${weekdays[date.getDay()]})`;
-  };
-
   return (
     <div className={styles.detail}>
       <div
@@ -45,7 +40,7 @@ export function ScheduleDetail({
       <div className={styles.detailMeta}>
         <div className={styles.detailMetaItem}>
           <span className={styles.detailLabel}>日付</span>
-          <span className={styles.detailValue}>{formatDate(schedule.date)}</span>
+          <span className={styles.detailValue}>{formatFullDateWithWeekday(schedule.date)}</span>
         </div>
 
         {(schedule.startTime || schedule.endTime) && (
@@ -64,7 +59,7 @@ export function ScheduleDetail({
           <h4 className={styles.detailSectionTitle}>詳細</h4>
           <div
             className={styles.detailText}
-            dangerouslySetInnerHTML={{ __html: schedule.description }}
+            {...createSafeHtmlProps(schedule.description)}
           />
         </div>
       )}

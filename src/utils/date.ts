@@ -72,3 +72,19 @@ export function parseScheduleDate(dateString: string): Date {
 }
 
 export const WEEKDAYS = ['日', '月', '火', '水', '木', '金', '土'];
+
+// "YYYY/MM/DD" 形式の文字列を "M月D日(曜日)" 形式に変換
+export function formatDateWithWeekday(dateStr: string): string {
+  const [, month, day] = dateStr.split('/').map(Number);
+  const date = parseScheduleDate(dateStr);
+  const weekday = WEEKDAYS[date.getDay()];
+  return `${month}月${day}日(${weekday})`;
+}
+
+// "YYYY/MM/DD" 形式の文字列を "YYYY年M月D日(曜日)" 形式に変換
+export function formatFullDateWithWeekday(dateStr: string): string {
+  const [year, month, day] = dateStr.split('/').map(Number);
+  const date = parseScheduleDate(dateStr);
+  const weekday = WEEKDAYS[date.getDay()];
+  return `${year}年${month}月${day}日(${weekday})`;
+}

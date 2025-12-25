@@ -39,10 +39,3 @@ export interface MemberApiItem {
   constellation?: string;
   groupcode?: string;
 }
-
-// Error types
-export interface ApiError {
-  type: 'NETWORK_ERROR' | 'PARSE_ERROR' | 'TIMEOUT';
-  message: string;
-  originalError?: Error;
-}

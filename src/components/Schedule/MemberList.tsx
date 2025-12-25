@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import type { Member } from '../../types/member';
 import styles from './Schedule.module.css';
 
@@ -8,13 +9,14 @@ interface MemberListProps {
 }
 
 export function MemberList({ memberCodes, members, onMemberClick }: MemberListProps) {
+  // O(1)でメンバーを取得できるようにMapを作成
+  const memberMap = useMemo(() => {
+    return new Map(members.map((m) => [m.code, m]));
+  }, [members]);
+
   if (memberCodes.length === 0) {
     return null;
   }
-
-  const getMember = (code: string): Member | undefined => {
-    return members.find((m) => m.code === code);
-  };
 
   const handleMemberClick = (code: string) => {
     onMemberClick?.(code);
@@ -32,7 +34,7 @@ export function MemberList({ memberCodes, members, onMemberClick }: MemberListPr
       <h4 className={styles.memberListTitle}>出演メンバー</h4>
       <div className={styles.memberChips}>
         {memberCodes.map((code) => {
-          const member = getMember(code);
+          const member = memberMap.get(code);
           if (!member) return null;
 
           return (

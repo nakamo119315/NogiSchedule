@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import type { Schedule } from '../../types/schedule';
+import { formatDateWithWeekday } from '../../utils/date';
 import { ScheduleItem } from './ScheduleItem';
 import styles from './Schedule.module.css';
 
@@ -99,14 +100,6 @@ export function ScheduleList({
     return () => clearTimeout(timer);
   }, [schedules]);
 
-  const formatDateHeader = (dateStr: string): string => {
-    const [year, month, day] = dateStr.split('/').map(Number);
-    const date = new Date(year, month - 1, day);
-    const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
-    const weekday = weekdays[date.getDay()];
-    return `${month}月${day}日(${weekday})`;
-  };
-
   const closestDate = findClosestDate();
 
   if (schedules.length === 0) {
@@ -203,7 +196,7 @@ export function ScheduleList({
             ref={date === closestDate ? todayRef : undefined}
           >
             <h3 className={styles.listDateHeader}>
-              {formatDateHeader(date)}
+              {formatDateWithWeekday(date)}
               {date === todayString && <span className={styles.todayBadge}>今日</span>}
             </h3>
             <div className={styles.listItems}>

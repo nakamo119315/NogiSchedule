@@ -101,7 +101,7 @@ function App() {
             aria-label="更新"
             title={lastUpdated ? `最終更新: ${lastUpdated.toLocaleTimeString()}` : '更新'}
           >
-            <span className={isRefreshing ? 'spinning' : ''}>🔄</span>
+            <span className={isRefreshing ? 'spinning' : ''} aria-hidden="true">🔄</span>
           </button>
           <button
             className="settings-button"
@@ -109,7 +109,7 @@ function App() {
             type="button"
             aria-label="設定"
           >
-            ⚙️
+            <span aria-hidden="true">⚙️</span>
           </button>
         </div>
       </header>

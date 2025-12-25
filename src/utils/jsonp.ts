@@ -39,7 +39,8 @@ async function processQueue(): Promise<void> {
 function executeRequest<T>(url: string, timeout: number): Promise<T> {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
-    let timeoutId: number;
+    // eslint-disable-next-line prefer-const -- cleanup関数で参照するため、代入前にletで宣言が必要
+    let timeoutId: number | undefined;
     let resolved = false;
 
     const cleanup = () => {
@@ -79,7 +80,7 @@ function executeRequest<T>(url: string, timeout: number): Promise<T> {
   });
 }
 
-export function fetchJsonp<T>(url: string, _callbackName: string = 'callback', timeout: number = 20000): Promise<T> {
+export function fetchJsonp<T>(url: string, timeout: number = 20000): Promise<T> {
   return new Promise((resolve, reject) => {
     requestQueue.push({
       url,
